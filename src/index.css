@@ -40,6 +40,7 @@ All colors MUST be HSL.
 
     --result-bg: 199 100% 85%;
     --result-hover: 142 100% 85%;
+    --result-foreground: 210 65% 15%;
     --glass: 0 0% 100% / 0.06;
     --card-shadow: 210 100% 5% / 0.6;
   }
