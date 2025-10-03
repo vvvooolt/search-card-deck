@@ -103,8 +103,8 @@ const Index = () => {
               </svg>
             </div>
           </div>
-          <h1 className="text-4xl font-bold text-foreground mb-2">CSV Search</h1>
-          <p className="text-muted-foreground">Search through titles with fuzzy matching</p>
+          <h1 className="text-4xl font-bold text-foreground mb-2">Keeko</h1>
+          <p className="text-muted-foreground">Research finder through Regex</p>
         </div>
 
         {/* Search Controls */}
