@@ -7,6 +7,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Loader2 } from "lucide-react";
+import ReactMarkdown from "react-markdown";
 
 interface SummaryDialogProps {
   open: boolean;
@@ -101,10 +102,10 @@ export const SummaryDialog = ({ open, onOpenChange, pmcId }: SummaryDialogProps)
           )}
 
           {summary && (
-            <div className="prose prose-sm max-w-none">
-              <pre className="whitespace-pre-wrap text-sm text-foreground bg-muted p-4 rounded-lg">
+            <div className="prose prose-sm max-w-none dark:prose-invert">
+              <ReactMarkdown>
                 {summary}
-              </pre>
+              </ReactMarkdown>
             </div>
           )}
         </div>
