@@ -14,7 +14,7 @@ class SystemPromptUpdate(BaseModel):
 # ✅ Allow CORS from localhost (React dev server)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://ai.termnh.com/", "https://ai.termnh.com/", "http://localhost:8080/"],  # <-- Add your frontend dev server origin here
+    allow_origins=["http://ai.termnh.com/", "https://ai.termnh.com/", "http://localhost:8080/", "http://localhost:5173/"],  # Added Vite dev server
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
