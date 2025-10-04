@@ -6,10 +6,10 @@ import { Separator } from "@/components/ui/separator";
 interface FilterOptionsProps {
   caseSensitive: boolean;
   wholeWords: boolean;
-  sortOrder: "asc" | "desc" | "none";
+  sortOrder: "asc" | "desc" | "none" | "relevance";
   onCaseSensitiveChange: (checked: boolean) => void;
   onWholeWordsChange: (checked: boolean) => void;
-  onSortOrderChange: (value: "asc" | "desc" | "none") => void;
+  onSortOrderChange: (value: "asc" | "desc" | "none" | "relevance") => void;
   isOpen: boolean;
 }
 
@@ -57,6 +57,12 @@ export const FilterOptions = ({
       <div className="space-y-2">
         <Label className="text-sm font-medium text-foreground">Sort Results</Label>
         <RadioGroup value={sortOrder} onValueChange={onSortOrderChange}>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="relevance" id="sort-relevance" />
+            <Label htmlFor="sort-relevance" className="text-foreground cursor-pointer font-normal">
+              By Relevance (Most Relevant First)
+            </Label>
+          </div>
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="none" id="sort-none" />
             <Label htmlFor="sort-none" className="text-foreground cursor-pointer font-normal">

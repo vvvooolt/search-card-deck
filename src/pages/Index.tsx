@@ -25,6 +25,7 @@ const RESULTS_PER_PAGE = 32;
 interface DataItem {
   Title: string;
   Link?: string;
+  score?: number;
 }
 
 const Index = () => {
@@ -32,7 +33,7 @@ const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [caseSensitive, setCaseSensitive] = useState(false);
   const [wholeWords, setWholeWords] = useState(false);
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc" | "none">("none");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc" | "none" | "relevance">("relevance");
   const [filterOpen, setFilterOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
@@ -80,16 +81,21 @@ const Index = () => {
       const flags = caseSensitive ? "" : "i";
       try {
         const regex = new RegExp(pattern, flags);
-        results = data.filter((item) => regex.test(item.Title));
+        results = data.filter((item) => regex.test(item.Title)).map(item => ({ ...item, score: 0 }));
       } catch (e) {
         results = [];
       }
     } else {
-      results = fuse ? fuse.search(searchQuery).map((r) => r.item) : [];
+      // Keep Fuse.js scores for relevance sorting
+      const fuseResults = fuse ? fuse.search(searchQuery) : [];
+      results = fuseResults.map((r) => ({ ...r.item, score: r.score }));
     }
 
     // Apply sorting
-    if (sortOrder !== "none") {
+    if (sortOrder === "relevance") {
+      // Sort by Fuse.js score (lower is more relevant)
+      results = [...results].sort((a, b) => (a.score ?? 1) - (b.score ?? 1));
+    } else if (sortOrder !== "none") {
       results = [...results].sort((a, b) => {
         const titleA = a.Title.toLowerCase();
         const titleB = b.Title.toLowerCase();
