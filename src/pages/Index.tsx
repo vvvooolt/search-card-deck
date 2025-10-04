@@ -154,25 +154,28 @@ const Index = () => {
             </DropdownMenuContent>
           </DropdownMenu>
           
-          <div className="inline-block mb-4 p-4 glass-panel rounded-2xl">
-            <div className="w-24 h-24 bg-primary/20 rounded-xl flex items-center justify-center">
-              <svg
-                className="w-12 h-12 text-primary"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                />
-              </svg>
+          <h1 className="text-5xl font-bold text-foreground mb-3 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+            Keeko
+          </h1>
+          <p className="text-lg text-muted-foreground mb-6">Research finder through Regex</p>
+          
+          {/* Stats Cards */}
+          <div className="flex justify-center gap-4 mt-8">
+            <div className="glass-panel px-6 py-3 rounded-xl">
+              <div className="text-2xl font-bold text-primary">{data.length}</div>
+              <div className="text-xs text-muted-foreground">Total Items</div>
+            </div>
+            <div className="glass-panel px-6 py-3 rounded-xl">
+              <div className="text-2xl font-bold text-accent">{filteredResults.length}</div>
+              <div className="text-xs text-muted-foreground">Results Found</div>
+            </div>
+            <div className="glass-panel px-6 py-3 rounded-xl">
+              <div className="text-2xl font-bold text-primary">
+                {searchQuery ? Math.round((filteredResults.length / data.length) * 100) : 0}%
+              </div>
+              <div className="text-xs text-muted-foreground">Match Rate</div>
             </div>
           </div>
-          <h1 className="text-4xl font-bold text-foreground mb-2">Keeko</h1>
-          <p className="text-muted-foreground">Research finder through Regex</p>
         </div>
 
         {/* Search Controls */}
