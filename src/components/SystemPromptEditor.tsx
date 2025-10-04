@@ -7,6 +7,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
@@ -20,6 +21,7 @@ const API_BASE = "http://localhost:3414";
 
 export const SystemPromptEditor = ({ open, onOpenChange }: SystemPromptEditorProps) => {
   const [prompt, setPrompt] = useState("");
+  const [wordCount, setWordCount] = useState<number>(250);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const { toast } = useToast();
@@ -37,6 +39,12 @@ export const SystemPromptEditor = ({ open, onOpenChange }: SystemPromptEditorPro
       if (!response.ok) throw new Error("Failed to load system prompt");
       const data = await response.json();
       setPrompt(data.prompt);
+      
+      // Extract existing word count goal if present
+      const wordCountMatch = data.prompt.match(/word count goal is (\d+)/i);
+      if (wordCountMatch) {
+        setWordCount(parseInt(wordCountMatch[1]));
+      }
     } catch (error) {
       toast({
         title: "Error",
@@ -51,12 +59,18 @@ export const SystemPromptEditor = ({ open, onOpenChange }: SystemPromptEditorPro
   const savePrompt = async () => {
     setSaving(true);
     try {
+      // Remove any existing word count goal text
+      let updatedPrompt = prompt.replace(/word count goal is \d+\.?\s*/gi, "");
+      
+      // Add the word count goal at the end
+      updatedPrompt = updatedPrompt.trim() + ` word count goal is ${wordCount}.`;
+      
       const response = await fetch(`${API_BASE}/api/system-prompt`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ prompt }),
+        body: JSON.stringify({ prompt: updatedPrompt }),
       });
       if (!response.ok) throw new Error("Failed to save system prompt");
       toast({
@@ -91,12 +105,31 @@ export const SystemPromptEditor = ({ open, onOpenChange }: SystemPromptEditorPro
           </div>
         ) : (
           <div className="space-y-4">
-            <Textarea
-              value={prompt}
-              onChange={(e) => setPrompt(e.target.value)}
-              className="min-h-[300px] font-mono text-sm"
-              placeholder="Enter system prompt..."
-            />
+            <div>
+              <label className="text-sm font-medium mb-2 block">
+                Word Count Goal
+              </label>
+              <Input
+                type="number"
+                value={wordCount}
+                onChange={(e) => setWordCount(parseInt(e.target.value) || 0)}
+                min="0"
+                className="w-32"
+              />
+            </div>
+            
+            <div>
+              <label className="text-sm font-medium mb-2 block">
+                System Prompt
+              </label>
+              <Textarea
+                value={prompt}
+                onChange={(e) => setPrompt(e.target.value)}
+                className="min-h-[300px] font-mono text-sm"
+                placeholder="Enter system prompt..."
+              />
+            </div>
+            
             <div className="flex justify-end gap-2">
               <Button
                 variant="outline"
