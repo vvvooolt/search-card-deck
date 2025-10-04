@@ -65,15 +65,11 @@ export const SummaryDialog = ({ open, onOpenChange, pmcId }: SummaryDialogProps)
     }
   };
 
-  // Reset state when PMC ID changes
+  // Fetch when dialog opens or when PMC ID changes
   useEffect(() => {
-    setSummary("");
-    setError("");
-  }, [pmcId]);
-
-  // Fetch when dialog opens with a valid PMC ID
-  useEffect(() => {
-    if (open && pmcId && !summary && !loading) {
+    if (open && pmcId) {
+      setSummary("");
+      setError("");
       fetchAndSummarize();
     }
   }, [open, pmcId]);
