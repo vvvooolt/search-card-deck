@@ -1,0 +1,48 @@
+
+from fastapi import FastAPI, File, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
+import subprocess
+import uvicorn
+import os
+
+app = FastAPI()
+
+# ✅ Allow CORS from localhost (React dev server)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://ai.termnh.com/", "https://ai.termnh.com/", "http://localhost:8080/"],  # <-- Add your frontend dev server origin here
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Path to your system prompt file
+SYSTEM_PROMPT_FILE = "/home/volt/Desktop/nasa/testing/search-card-deck/backend/systemprompt.txt"
+
+@app.post("/api/summarize")
+async def summarize_xml(file: UploadFile = File(...)):
+    xml_content = await file.read()
+    xml_text = xml_content
+
+    if not os.path.exists(SYSTEM_PROMPT_FILE):
+        return {"error": f"System prompt file '{SYSTEM_PROMPT_FILE}' not found."}
+
+    with open(SYSTEM_PROMPT_FILE, "r") as f:
+        system_prompt = f.read().strip()
+
+    full_prompt = f"{system_prompt}\n\nSummarize this XML:\n{xml_text}"
+
+    try:
+        result = subprocess.run(
+            ["ollama", "run", "--think=false", "qwen3:0.6b"],
+            input=full_prompt.encode("latin-1"),
+            capture_output=True,
+            check=True
+        )
+        summary = result.stdout.decode("latin-1")
+        return {"summary": summary}
+    except subprocess.CalledProcessError as e:
+        return {"error": e.stderr.decode("latin-1")}
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=3414)
