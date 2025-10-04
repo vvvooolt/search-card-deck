@@ -25,6 +25,6 @@ cd Keeko/electron-client
 sudo chmod +x install.sh && ./install.sh
 ```
 ---
-This project was created for (Nasa space apps challenge 2025 hackathon)[https://www.spaceappschallenge.org/2025/]
+This project was created for [Nasa space apps challenge 2025 hackathon](https://www.spaceappschallenge.org/2025/)
 
 
