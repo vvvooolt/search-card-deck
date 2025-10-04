@@ -20,8 +20,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Path to your system prompt file
-SYSTEM_PROMPT_FILE = "/home/volt/Desktop/nasa/testing/search-card-deck/backend/systemprompt.txt"
+# Path to your system prompt file (absolute path)
+SYSTEM_PROMPT_FILE = os.path.abspath("/home/volt/Desktop/nasa/testing/search-card-deck/backend/systemprompt.txt")
 
 @app.get("/api/system-prompt")
 async def get_system_prompt():
