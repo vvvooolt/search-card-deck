@@ -4,6 +4,9 @@ import { SearchBar } from "@/components/SearchBar";
 import { FilterOptions } from "@/components/FilterOptions";
 import { ResultGrid } from "@/components/ResultGrid";
 import { Pagination } from "@/components/Pagination";
+import { SystemPromptEditor } from "@/components/SystemPromptEditor";
+import { Button } from "@/components/ui/button";
+import { Settings } from "lucide-react";
 import { parseCSV } from "@/utils/csvParser";
 
 const RESULTS_PER_PAGE = 32;
@@ -21,6 +24,7 @@ const Index = () => {
   const [filterOpen, setFilterOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
+  const [promptEditorOpen, setPromptEditorOpen] = useState(false);
 
   // Load CSV data
   useEffect(() => {
@@ -85,7 +89,16 @@ const Index = () => {
     <div className="min-h-screen py-8 px-4">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-12 relative">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setPromptEditorOpen(true)}
+            className="absolute right-0 top-0"
+          >
+            <Settings className="h-5 w-5" />
+          </Button>
+          
           <div className="inline-block mb-4 p-4 glass-panel rounded-2xl">
             <div className="w-24 h-24 bg-primary/20 rounded-xl flex items-center justify-center">
               <svg
@@ -144,6 +157,11 @@ const Index = () => {
           </div>
         )}
       </div>
+      
+      <SystemPromptEditor 
+        open={promptEditorOpen} 
+        onOpenChange={setPromptEditorOpen} 
+      />
     </div>
   );
 };

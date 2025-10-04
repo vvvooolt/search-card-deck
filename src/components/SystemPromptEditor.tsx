@@ -1,0 +1,118 @@
+import { useState, useEffect } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+import { Loader2 } from "lucide-react";
+
+interface SystemPromptEditorProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+const API_BASE = "http://ai.termnh.com";
+
+export const SystemPromptEditor = ({ open, onOpenChange }: SystemPromptEditorProps) => {
+  const [prompt, setPrompt] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    if (open) {
+      loadPrompt();
+    }
+  }, [open]);
+
+  const loadPrompt = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(`${API_BASE}/api/system-prompt`);
+      if (!response.ok) throw new Error("Failed to load system prompt");
+      const data = await response.json();
+      setPrompt(data.prompt);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to load system prompt",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const savePrompt = async () => {
+    setSaving(true);
+    try {
+      const response = await fetch(`${API_BASE}/api/system-prompt`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ prompt }),
+      });
+      if (!response.ok) throw new Error("Failed to save system prompt");
+      toast({
+        title: "Success",
+        description: "System prompt saved successfully",
+      });
+      onOpenChange(false);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to save system prompt",
+        variant: "destructive",
+      });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-2xl max-h-[80vh]">
+        <DialogHeader>
+          <DialogTitle>Edit System Prompt</DialogTitle>
+          <DialogDescription>
+            Customize the AI system prompt for document summarization
+          </DialogDescription>
+        </DialogHeader>
+        
+        {loading ? (
+          <div className="flex items-center justify-center py-8">
+            <Loader2 className="h-6 w-6 animate-spin text-primary" />
+          </div>
+        ) : (
+          <div className="space-y-4">
+            <Textarea
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              className="min-h-[300px] font-mono text-sm"
+              placeholder="Enter system prompt..."
+            />
+            <div className="flex justify-end gap-2">
+              <Button
+                variant="outline"
+                onClick={() => onOpenChange(false)}
+                disabled={saving}
+              >
+                Cancel
+              </Button>
+              <Button onClick={savePrompt} disabled={saving}>
+                {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                Save
+              </Button>
+            </div>
+          </div>
+        )}
+      </DialogContent>
+    </Dialog>
+  );
+};

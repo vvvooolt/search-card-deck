@@ -1,11 +1,15 @@
 
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 import subprocess
 import uvicorn
 import os
 
 app = FastAPI()
+
+class SystemPromptUpdate(BaseModel):
+    prompt: str
 
 # ✅ Allow CORS from localhost (React dev server)
 app.add_middleware(
@@ -18,6 +22,25 @@ app.add_middleware(
 
 # Path to your system prompt file
 SYSTEM_PROMPT_FILE = "/home/volt/Desktop/nasa/testing/search-card-deck/backend/systemprompt.txt"
+
+@app.get("/api/system-prompt")
+async def get_system_prompt():
+    if not os.path.exists(SYSTEM_PROMPT_FILE):
+        return {"error": f"System prompt file '{SYSTEM_PROMPT_FILE}' not found."}
+    
+    with open(SYSTEM_PROMPT_FILE, "r") as f:
+        prompt = f.read()
+    
+    return {"prompt": prompt}
+
+@app.post("/api/system-prompt")
+async def update_system_prompt(data: SystemPromptUpdate):
+    try:
+        with open(SYSTEM_PROMPT_FILE, "w") as f:
+            f.write(data.prompt)
+        return {"success": True, "message": "System prompt updated successfully"}
+    except Exception as e:
+        return {"error": str(e)}
 
 @app.post("/api/summarize")
 async def summarize_xml(file: UploadFile = File(...)):
