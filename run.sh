@@ -1,6 +1,4 @@
 #!/bin/sh
-python3 ~/Desktop/nasa/testing/search-card-deck/backend/api.py &
+python3 ~/Desktop/nasa/testing/keeko/backend/api.py &
 ollama serve &
 npm run dev &
-detach
-wait
