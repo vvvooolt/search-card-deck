@@ -49,7 +49,8 @@ export const ResultGrid = ({ results }: ResultGridProps) => {
               target="_blank"
               rel="noopener noreferrer"
               onContextMenu={(e) => handleRightClick(e, link)}
-              className="block p-4 bg-[hsl(var(--result-bg))] hover:bg-[hsl(var(--result-hover))] text-[hsl(var(--result-foreground))] rounded-xl border border-transparent transition-all duration-200 hover:scale-105 hover:shadow-lg"
+              className="block p-4 bg-[hsl(var(--result-bg))] hover:bg-[hsl(var(--result-hover))] text-[hsl(var(--result-foreground))] rounded-xl border border-transparent transition-all duration-200 hover:scale-105 hover:shadow-lg animate-fade-in"
+              style={{ animationDelay: `${index * 30}ms` }}
             >
               <span className="text-sm font-medium line-clamp-2">{title}</span>
             </a>
