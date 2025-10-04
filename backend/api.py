@@ -5,6 +5,8 @@ from pydantic import BaseModel
 import subprocess
 import uvicorn
 import os
+import xml.etree.ElementTree as ET
+import re
 
 app = FastAPI()
 
@@ -42,10 +44,92 @@ async def update_system_prompt(data: SystemPromptUpdate):
     except Exception as e:
         return {"error": str(e)}
 
+def clean_text(text):
+    """Clean and normalize text"""
+    if not text:
+        return ""
+    # Remove extra whitespace
+    text = re.sub(r'\s+', ' ', text)
+    # Remove special characters but keep punctuation
+    text = re.sub(r'[^\w\s.,;:!?()\-]', '', text)
+    return text.strip()
+
+def extract_text_from_xml(xml_bytes):
+    """Parse XML and extract structured text content"""
+    try:
+        root = ET.fromstring(xml_bytes)
+        
+        sections = {}
+        
+        # Extract title
+        title = root.find('.//article-title')
+        if title is not None:
+            sections['Title'] = clean_text(''.join(title.itertext()))
+        
+        # Extract abstract
+        abstract = root.find('.//abstract')
+        if abstract is not None:
+            abstract_text = ' '.join(p.strip() for p in abstract.itertext() if p.strip())
+            sections['Abstract'] = clean_text(abstract_text)
+        
+        # Extract authors
+        authors = []
+        for contrib in root.findall('.//contrib[@contrib-type="author"]'):
+            given = contrib.find('.//given-names')
+            surname = contrib.find('.//surname')
+            if given is not None and surname is not None:
+                authors.append(f"{given.text} {surname.text}")
+        if authors:
+            sections['Authors'] = ', '.join(authors[:5])  # Limit to first 5 authors
+        
+        # Extract body sections
+        body = root.find('.//body')
+        if body is not None:
+            body_sections = []
+            for sec in body.findall('.//sec'):
+                title_elem = sec.find('.//title')
+                sec_title = clean_text(''.join(title_elem.itertext())) if title_elem is not None else "Section"
+                
+                # Get all paragraphs in this section
+                paragraphs = []
+                for p in sec.findall('.//p'):
+                    p_text = ''.join(p.itertext()).strip()
+                    if p_text:
+                        paragraphs.append(clean_text(p_text))
+                
+                if paragraphs:
+                    body_sections.append(f"{sec_title}: {' '.join(paragraphs[:3])}")  # Limit paragraphs per section
+            
+            if body_sections:
+                sections['Body'] = '\n\n'.join(body_sections[:5])  # Limit to 5 sections
+        
+        # Extract conclusions
+        conclusions = root.findall('.//sec[@sec-type="conclusions"]')
+        if conclusions:
+            conclusion_texts = []
+            for conclusion in conclusions:
+                for p in conclusion.findall('.//p'):
+                    p_text = ''.join(p.itertext()).strip()
+                    if p_text:
+                        conclusion_texts.append(clean_text(p_text))
+            if conclusion_texts:
+                sections['Conclusions'] = ' '.join(conclusion_texts)
+        
+        # Format output
+        formatted_text = ""
+        for section_name, content in sections.items():
+            formatted_text += f"\n## {section_name}\n{content}\n"
+        
+        return formatted_text.strip()
+    
+    except ET.ParseError as e:
+        return f"XML parsing error: {str(e)}"
+    except Exception as e:
+        return f"Error extracting text: {str(e)}"
+
 @app.post("/api/summarize")
 async def summarize_xml(file: UploadFile = File(...)):
     xml_content = await file.read()
-    xml_text = xml_content
 
     if not os.path.exists(SYSTEM_PROMPT_FILE):
         return {"error": f"System prompt file '{SYSTEM_PROMPT_FILE}' not found."}
@@ -53,19 +137,22 @@ async def summarize_xml(file: UploadFile = File(...)):
     with open(SYSTEM_PROMPT_FILE, "r") as f:
         system_prompt = f.read().strip()
 
-    full_prompt = f"{system_prompt}\n\nSummarize this XML:\n{xml_text}"
+    # Extract and clean the XML content
+    extracted_text = extract_text_from_xml(xml_content)
+    
+    full_prompt = f"{system_prompt}\n\nSummarize this research paper:\n\n{extracted_text}"
 
     try:
         result = subprocess.run(
             ["ollama", "run", "--think=false", "qwen3:0.6b"],
-            input=full_prompt.encode("latin-1"),
+            input=full_prompt.encode("utf-8"),
             capture_output=True,
             check=True
         )
-        summary = result.stdout.decode("latin-1")
+        summary = result.stdout.decode("utf-8")
         return {"summary": summary}
     except subprocess.CalledProcessError as e:
-        return {"error": e.stderr.decode("latin-1")}
+        return {"error": e.stderr.decode("utf-8")}
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=3414)
