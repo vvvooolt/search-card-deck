@@ -30,6 +30,7 @@ const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [caseSensitive, setCaseSensitive] = useState(false);
   const [wholeWords, setWholeWords] = useState(false);
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc" | "none">("none");
   const [filterOpen, setFilterOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
@@ -66,6 +67,8 @@ const Index = () => {
   const filteredResults = useMemo(() => {
     if (!searchQuery || !data.length) return [];
 
+    let results: DataItem[] = [];
+
     if (caseSensitive || wholeWords) {
       let pattern = searchQuery.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
       if (wholeWords) {
@@ -74,14 +77,29 @@ const Index = () => {
       const flags = caseSensitive ? "" : "i";
       try {
         const regex = new RegExp(pattern, flags);
-        return data.filter((item) => regex.test(item.Title));
+        results = data.filter((item) => regex.test(item.Title));
       } catch (e) {
-        return [];
+        results = [];
       }
+    } else {
+      results = fuse ? fuse.search(searchQuery).map((r) => r.item) : [];
     }
 
-    return fuse ? fuse.search(searchQuery).map((r) => r.item) : [];
-  }, [searchQuery, data, caseSensitive, wholeWords, fuse]);
+    // Apply sorting
+    if (sortOrder !== "none") {
+      results = [...results].sort((a, b) => {
+        const titleA = a.Title.toLowerCase();
+        const titleB = b.Title.toLowerCase();
+        if (sortOrder === "asc") {
+          return titleA.localeCompare(titleB);
+        } else {
+          return titleB.localeCompare(titleA);
+        }
+      });
+    }
+
+    return results;
+  }, [searchQuery, data, caseSensitive, wholeWords, sortOrder, fuse]);
 
   // Paginated results
   const paginatedResults = useMemo(() => {
@@ -95,7 +113,7 @@ const Index = () => {
   // Reset to page 1 when search changes
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchQuery, caseSensitive, wholeWords]);
+  }, [searchQuery, caseSensitive, wholeWords, sortOrder]);
 
   return (
     <div className="min-h-screen py-8 px-4">
@@ -160,8 +178,10 @@ const Index = () => {
           <FilterOptions
             caseSensitive={caseSensitive}
             wholeWords={wholeWords}
+            sortOrder={sortOrder}
             onCaseSensitiveChange={setCaseSensitive}
             onWholeWordsChange={setWholeWords}
+            onSortOrderChange={setSortOrder}
             isOpen={filterOpen}
           />
         </div>
