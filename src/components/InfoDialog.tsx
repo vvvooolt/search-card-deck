@@ -75,7 +75,7 @@ export const InfoDialog = ({ open, onOpenChange }: InfoDialogProps) => {
             <Button
               variant="outline"
               className="w-full hover-scale"
-              onClick={() => window.open("https://github.com/yourusername/keeko", "_blank")}
+              onClick={() => window.open("https://github.com/vvvooolt/Keeko", "_blank")}
             >
               <Github className="mr-2 h-5 w-5" />
               View on GitHub
