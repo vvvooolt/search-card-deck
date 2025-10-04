@@ -66,7 +66,7 @@ export const FilterOptions = ({
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="none" id="sort-none" />
             <Label htmlFor="sort-none" className="text-foreground cursor-pointer font-normal">
-              No Sorting
+              Random Order
             </Label>
           </div>
           <div className="flex items-center space-x-2">

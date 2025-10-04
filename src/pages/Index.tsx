@@ -95,7 +95,14 @@ const Index = () => {
     if (sortOrder === "relevance") {
       // Sort by Fuse.js score (lower is more relevant)
       results = [...results].sort((a, b) => (a.score ?? 1) - (b.score ?? 1));
-    } else if (sortOrder !== "none") {
+    } else if (sortOrder === "none") {
+      // Random shuffle using Fisher-Yates algorithm
+      results = [...results];
+      for (let i = results.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [results[i], results[j]] = [results[j], results[i]];
+      }
+    } else {
       results = [...results].sort((a, b) => {
         const titleA = a.Title.toLowerCase();
         const titleB = b.Title.toLowerCase();
