@@ -42,7 +42,7 @@ export const SummaryDialog = ({ open, onOpenChange, pmcId }: SummaryDialogProps)
       const formData = new FormData();
       formData.append("file", xmlBlob, "paper.xml");
 
-      const summaryResponse = await fetch("http://ollama.termnh.com/api/summarize", {
+      const summaryResponse = await fetch("http://localhost:3414/api/summarize", {
         method: "POST",
         body: formData,
       });
