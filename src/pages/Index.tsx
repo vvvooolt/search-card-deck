@@ -5,6 +5,7 @@ import { FilterOptions } from "@/components/FilterOptions";
 import { ResultGrid } from "@/components/ResultGrid";
 import { Pagination } from "@/components/Pagination";
 import { SystemPromptEditor } from "@/components/SystemPromptEditor";
+import { InfoDialog } from "@/components/InfoDialog";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -32,6 +33,7 @@ const Index = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [promptEditorOpen, setPromptEditorOpen] = useState(false);
+  const [infoDialogOpen, setInfoDialogOpen] = useState(false);
   const { toast } = useToast();
 
   // Load CSV data
@@ -117,7 +119,7 @@ const Index = () => {
                 <Palette className="mr-2 h-4 w-4" />
                 Themes
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => toast({ title: "Info", description: "Keeko - Research finder through Regex\nVersion 1.0" })}>
+              <DropdownMenuItem onClick={() => setInfoDialogOpen(true)}>
                 <Info className="mr-2 h-4 w-4" />
                 Info
               </DropdownMenuItem>
@@ -186,6 +188,11 @@ const Index = () => {
       <SystemPromptEditor 
         open={promptEditorOpen} 
         onOpenChange={setPromptEditorOpen} 
+      />
+      
+      <InfoDialog 
+        open={infoDialogOpen} 
+        onOpenChange={setInfoDialogOpen} 
       />
     </div>
   );
