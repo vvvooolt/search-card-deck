@@ -6,6 +6,7 @@ import { ResultGrid } from "@/components/ResultGrid";
 import { Pagination } from "@/components/Pagination";
 import { SystemPromptEditor } from "@/components/SystemPromptEditor";
 import { InfoDialog } from "@/components/InfoDialog";
+import { ThemeDialog } from "@/components/ThemeDialog";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -34,6 +35,7 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [promptEditorOpen, setPromptEditorOpen] = useState(false);
   const [infoDialogOpen, setInfoDialogOpen] = useState(false);
+  const [themeDialogOpen, setThemeDialogOpen] = useState(false);
   const { toast } = useToast();
 
   // Load CSV data
@@ -115,7 +117,7 @@ const Index = () => {
                 <FileText className="mr-2 h-4 w-4" />
                 System Prompt
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => toast({ title: "Themes", description: "Theme settings coming soon" })}>
+              <DropdownMenuItem onClick={() => setThemeDialogOpen(true)}>
                 <Palette className="mr-2 h-4 w-4" />
                 Themes
               </DropdownMenuItem>
@@ -193,6 +195,11 @@ const Index = () => {
       <InfoDialog 
         open={infoDialogOpen} 
         onOpenChange={setInfoDialogOpen} 
+      />
+      
+      <ThemeDialog 
+        open={themeDialogOpen} 
+        onOpenChange={setThemeDialogOpen} 
       />
     </div>
   );
