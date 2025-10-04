@@ -17,6 +17,7 @@ import {
 import { Settings, FileText, Palette, Info } from "lucide-react";
 import { parseCSV } from "@/utils/csvParser";
 import { useToast } from "@/hooks/use-toast";
+import { ParticleBackground } from "@/components/ParticleBackground";
 
 const RESULTS_PER_PAGE = 32;
 
@@ -116,8 +117,9 @@ const Index = () => {
   }, [searchQuery, caseSensitive, wholeWords, sortOrder]);
 
   return (
-    <div className="min-h-screen py-8 px-4">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen py-8 px-4 relative">
+      <ParticleBackground />
+      <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}
         <div className="text-center mb-12 relative">
           <DropdownMenu>
