@@ -7,6 +7,7 @@ import { Pagination } from "@/components/Pagination";
 import { SystemPromptEditor } from "@/components/SystemPromptEditor";
 import { InfoDialog } from "@/components/InfoDialog";
 import { ThemeDialog } from "@/components/ThemeDialog";
+import { ModelDialog } from "@/components/ModelDialog";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -14,7 +15,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Settings, FileText, Palette, Info } from "lucide-react";
+import { Settings, FileText, Palette, Info, BrainCircuit } from "lucide-react";
 import { parseCSV } from "@/utils/csvParser";
 import { useToast } from "@/hooks/use-toast";
 import { ParticleBackground } from "@/components/ParticleBackground";
@@ -38,6 +39,7 @@ const Index = () => {
   const [promptEditorOpen, setPromptEditorOpen] = useState(false);
   const [infoDialogOpen, setInfoDialogOpen] = useState(false);
   const [themeDialogOpen, setThemeDialogOpen] = useState(false);
+  const [modelDialogOpen, setModelDialogOpen] = useState(false);
   const { toast } = useToast();
 
   // Load CSV data
@@ -137,6 +139,10 @@ const Index = () => {
                 <FileText className="mr-2 h-4 w-4" />
                 System Prompt
               </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setModelDialogOpen(true)}>
+                <BrainCircuit className="mr-2 h-4 w-4" />
+                Model
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={() => setThemeDialogOpen(true)}>
                 <Palette className="mr-2 h-4 w-4" />
                 Themes
@@ -212,6 +218,11 @@ const Index = () => {
       <SystemPromptEditor 
         open={promptEditorOpen} 
         onOpenChange={setPromptEditorOpen} 
+      />
+      
+      <ModelDialog 
+        open={modelDialogOpen} 
+        onOpenChange={setModelDialogOpen} 
       />
       
       <InfoDialog 
