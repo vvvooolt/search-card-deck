@@ -20,7 +20,11 @@ cd ~/Downloads
 
 git clone https://github.com/vvvooolt/Keeko.git
 
-cd Keeko/electron-client
+cd Keeko
+
+npm i
+
+cd electron-client
 
 sudo chmod +x install.sh && ./install.sh
 ```
