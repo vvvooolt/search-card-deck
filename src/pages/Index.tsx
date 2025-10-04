@@ -131,7 +131,7 @@ const Index = () => {
                 size="icon"
                 className="absolute right-0 top-0"
               >
-                <Settings className="h-8 w-8" />
+                <Settings className="h-15 w-15" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
