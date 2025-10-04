@@ -6,8 +6,15 @@ import { ResultGrid } from "@/components/ResultGrid";
 import { Pagination } from "@/components/Pagination";
 import { SystemPromptEditor } from "@/components/SystemPromptEditor";
 import { Button } from "@/components/ui/button";
-import { Settings } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Settings, FileText, Palette, Info } from "lucide-react";
 import { parseCSV } from "@/utils/csvParser";
+import { useToast } from "@/hooks/use-toast";
 
 const RESULTS_PER_PAGE = 32;
 
@@ -25,6 +32,7 @@ const Index = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [promptEditorOpen, setPromptEditorOpen] = useState(false);
+  const { toast } = useToast();
 
   // Load CSV data
   useEffect(() => {
@@ -90,14 +98,31 @@ const Index = () => {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12 relative">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setPromptEditorOpen(true)}
-            className="absolute right-0 top-0"
-          >
-            <Settings className="h-5 w-5" />
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="absolute right-0 top-0"
+              >
+                <Settings className="h-5 w-5" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuItem onClick={() => setPromptEditorOpen(true)}>
+                <FileText className="mr-2 h-4 w-4" />
+                System Prompt
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => toast({ title: "Themes", description: "Theme settings coming soon" })}>
+                <Palette className="mr-2 h-4 w-4" />
+                Themes
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => toast({ title: "Info", description: "Keeko - Research finder through Regex\nVersion 1.0" })}>
+                <Info className="mr-2 h-4 w-4" />
+                Info
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           
           <div className="inline-block mb-4 p-4 glass-panel rounded-2xl">
             <div className="w-24 h-24 bg-primary/20 rounded-xl flex items-center justify-center">
