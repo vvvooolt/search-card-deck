@@ -16,7 +16,8 @@ Keeko is an intelligent summarization engine designed to help researchers, stude
 ---
 ## Website client
 
-#### https://ai.termnh.com/ (Under Development)
+#### https://ai.termnh.com/ 
+##### (website would most likely be down since we are not using a VPS or similar hosting service, but are localhosting on our dual laptop setup, if you would like us to re-host the site temporarily for you, [please let us know](mailto:contact@keeko.termnh.com) )
 ---
 ## Desktop Installation 
 ```sh
