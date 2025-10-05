@@ -38,5 +38,15 @@ else
 fi
 
 echo ""
+echo "Installing npm dependencies..."
+npm i
+if [ $? -eq 0 ]; then
+    echo "✓ npm dependencies installed successfully"
+else
+    echo "✗ Failed to install npm dependencies"
+    exit 1
+fi
+
+echo ""
 echo "=== Installation Complete ==="
 echo "You can now run the application with ./run.sh"
