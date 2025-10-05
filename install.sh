@@ -38,8 +38,17 @@ else
 fi
 
 echo ""
+echo "Installing Desktop client..."
+sudo chmod +x ./electron-client/install.sh
+./electron-client/install.sh
+
+
+echo ""
 echo "Installing npm dependencies..."
 npm i
+cd electron-client
+npm i
+cd ..
 if [ $? -eq 0 ]; then
     echo "✓ npm dependencies installed successfully"
 else
@@ -49,4 +58,4 @@ fi
 
 echo ""
 echo "=== Installation Complete ==="
-echo "You can now run the application with ./run.sh"
+echo "You can now run the application with the keeko command for Desktop, or the ./run.sh for the browser site"
