@@ -17,7 +17,7 @@ interface SystemPromptEditorProps {
   onOpenChange: (open: boolean) => void;
 }
 
-const API_BASE = "https://ollama.termnh.com";
+const API_BASE = "http://localhost:8080";
 
 export const SystemPromptEditor = ({ open, onOpenChange }: SystemPromptEditorProps) => {
   const [prompt, setPrompt] = useState("");
