@@ -1,4 +1,4 @@
 #!/bin/sh
-python3 ~/Desktop/nasa/testing/keeko/backend/api.py &
+python3 ./backend/api.py &
 ollama serve &
 npm run dev &
