@@ -42,7 +42,7 @@ echo "Installing Desktop client..."
 sudo chmod +x ./electron-client/install.sh
 ./electron-client/install.sh
 
-sudo pacman -S python-fastapi
+sudo pacman -S python-fastapi python-uvicorn
 
 echo ""
 echo "Installing npm dependencies..."
