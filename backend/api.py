@@ -155,4 +155,4 @@ async def summarize_xml(file: UploadFile = File(...)):
         return {"error": e.stderr.decode("utf-8")}
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=3414)
+    uvicorn.run(app, host="0.0.0.0", port=8080)
