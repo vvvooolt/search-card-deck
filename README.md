@@ -1,5 +1,7 @@
 # Keeko 🚀  
-**AI-powered, open-source summarizer for NASA & NIH research documents**  
+**AI-powered, open-source summarizer for NASA & NIH research documents**
+
+### This branch contains the project as it was at the end of the NASA space apps local event, however, due to our dedication and love for the project, we decided to split the project into another branch containing post event updates and changes, to see that branch, [click here](https://github.com/vvvooolt/Keeko/tree/POST-EVENT-UPDATES)
 
 Keeko is an intelligent summarization engine designed to help researchers, students, and enthusiasts quickly digest scientific articles. Instead of reading dozens of lengthy papers, Keeko extracts the insights you care about—tailored to your goals and focus areas.  
 
