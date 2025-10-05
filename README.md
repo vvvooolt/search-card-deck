@@ -18,7 +18,8 @@ Keeko is an intelligent summarization engine designed to help researchers, stude
 
 #### https://ai.termnh.com/
 ---
-## Desktop Installation 
+# Desktop client
+## Installation 
 ```sh
 cd ~/Downloads
 
@@ -27,6 +28,11 @@ git clone https://github.com/vvvooolt/Keeko.git
 cd Keeko
 
 sudo chmod +x install.sh && ./install.sh
+```
+## Usage
+**Running the application**
+```
+keeko
 ```
 ---
 This project was created for [Nasa space apps challenge 2025 hackathon](https://www.spaceappschallenge.org/2025/)
