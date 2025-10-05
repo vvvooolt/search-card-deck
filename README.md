@@ -31,7 +31,7 @@ sudo chmod +x install.sh && ./install.sh
 ```
 ## Usage
 **Running the application**
-```
+```sh
 keeko
 ```
 ---
