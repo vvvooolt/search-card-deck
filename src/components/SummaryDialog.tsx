@@ -42,7 +42,7 @@ export const SummaryDialog = ({ open, onOpenChange, pmcId }: SummaryDialogProps)
       const formData = new FormData();
       formData.append("file", xmlBlob, "paper.xml");
 
-      const summaryResponse = await fetch("http://ollama.termnh.com/api/summarize", {
+      const summaryResponse = await fetch("https://ollama.termnh.com/api/summarize", {
         method: "POST",
         body: formData,
       });
@@ -98,7 +98,7 @@ export const SummaryDialog = ({ open, onOpenChange, pmcId }: SummaryDialogProps)
             <div className="p-4 bg-destructive/10 border border-destructive/20 rounded-lg">
               <p className="text-destructive text-sm">{error}</p>
               <p className="text-xs text-muted-foreground mt-2">
-                Make sure the summarization service is available at http://ollama.termnh.com/api/summarize
+                Make sure the summarization service is available at https://ollama.termnh.com/api/summarize
               </p>
             </div>
           )}
