@@ -40,7 +40,7 @@ keeko
 ---
 ## Want to contact us?
 ##### [email us](mailto:contact@keeko.termnh.com)
-##### or alternatively, join the [development discord server!](https://discord.gg/FJSj4YHz)
+##### or alternatively, join the [development discord server!](https://discord.gg/NGdepUFaec)
 ---
 This project was created for [Nasa space apps challenge 2025 hackathon](https://www.spaceappschallenge.org/2025/)
 
