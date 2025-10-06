@@ -13,16 +13,14 @@ app = FastAPI()
 class SystemPromptUpdate(BaseModel):
     prompt: str
 
-# ✅ Allow CORS from localhost (React dev server)
 app.add_middleware(
     CORSMiddleware,
-    allow_origin_regex=r".*",  # Allow all origins (useful for previews/dev)
+    allow_origin_regex=r".*",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Path to your system prompt file (absolute path)
 SYSTEM_PROMPT_FILE = os.path.abspath("./backend/systemprompt.txt")
 
 @app.get("/api/system-prompt")
@@ -48,9 +46,7 @@ def clean_text(text):
     """Clean and normalize text"""
     if not text:
         return ""
-    # Remove extra whitespace
     text = re.sub(r'\s+', ' ', text)
-    # Remove special characters but keep punctuation
     text = re.sub(r'[^\w\s.,;:!?()\-]', '', text)
     return text.strip()
 
@@ -61,18 +57,15 @@ def extract_text_from_xml(xml_bytes):
         
         sections = {}
         
-        # Extract title
         title = root.find('.//article-title')
         if title is not None:
             sections['Title'] = clean_text(''.join(title.itertext()))
         
-        # Extract abstract
         abstract = root.find('.//abstract')
         if abstract is not None:
             abstract_text = ' '.join(p.strip() for p in abstract.itertext() if p.strip())
             sections['Abstract'] = clean_text(abstract_text)
         
-        # Extract authors
         authors = []
         for contrib in root.findall('.//contrib[@contrib-type="author"]'):
             given = contrib.find('.//given-names')
@@ -82,7 +75,6 @@ def extract_text_from_xml(xml_bytes):
         if authors:
             sections['Authors'] = ', '.join(authors[:5])  # Limit to first 5 authors
         
-        # Extract body sections
         body = root.find('.//body')
         if body is not None:
             body_sections = []
@@ -90,7 +82,6 @@ def extract_text_from_xml(xml_bytes):
                 title_elem = sec.find('.//title')
                 sec_title = clean_text(''.join(title_elem.itertext())) if title_elem is not None else "Section"
                 
-                # Get all paragraphs in this section
                 paragraphs = []
                 for p in sec.findall('.//p'):
                     p_text = ''.join(p.itertext()).strip()
@@ -103,7 +94,6 @@ def extract_text_from_xml(xml_bytes):
             if body_sections:
                 sections['Body'] = '\n\n'.join(body_sections[:5])  # Limit to 5 sections
         
-        # Extract conclusions
         conclusions = root.findall('.//sec[@sec-type="conclusions"]')
         if conclusions:
             conclusion_texts = []
@@ -115,7 +105,6 @@ def extract_text_from_xml(xml_bytes):
             if conclusion_texts:
                 sections['Conclusions'] = ' '.join(conclusion_texts)
         
-        # Format output
         formatted_text = ""
         for section_name, content in sections.items():
             formatted_text += f"\n## {section_name}\n{content}\n"
@@ -137,7 +126,6 @@ async def summarize_xml(file: UploadFile = File(...)):
     with open(SYSTEM_PROMPT_FILE, "r") as f:
         system_prompt = f.read().strip()
 
-    # Extract and clean the XML content
     extracted_text = extract_text_from_xml(xml_content)
     
     full_prompt = f"{system_prompt}\n\nSummarize this research paper:\n\n{extracted_text}"

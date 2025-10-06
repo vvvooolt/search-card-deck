@@ -46,10 +46,10 @@ type ModelType = "local" | "gemini" | "openai" | "copilot" | "qwen";
 export const ModelDialog = ({ open, onOpenChange }: ModelDialogProps) => {
   const [selectedModel, setSelectedModel] = useState<ModelType>("local");
   const [geminiConfig, setGeminiConfig] = useState<GeminiConfig>({
-    name: "keeko",
-    projectName: "projects/974968693201",
-    projectNumber: "974968693201",
-    key: "KEY",
+    name: "",
+    projectName: "",
+    projectNumber: "",
+    key: "",
   });
   const [openaiConfig, setOpenaiConfig] = useState<OpenAIConfig>({
     apiKey: "",
@@ -153,7 +153,7 @@ export const ModelDialog = ({ open, onOpenChange }: ModelDialogProps) => {
                   id="name"
                   value={geminiConfig.name}
                   onChange={(e) => setGeminiConfig({ ...geminiConfig, name: e.target.value })}
-                  placeholder="keeko"
+                  placeholder="Name"
                 />
               </div>
               
@@ -163,7 +163,7 @@ export const ModelDialog = ({ open, onOpenChange }: ModelDialogProps) => {
                   id="projectName"
                   value={geminiConfig.projectName}
                   onChange={(e) => setGeminiConfig({ ...geminiConfig, projectName: e.target.value })}
-                  placeholder="projects/974968693201"
+                  placeholder="project name"
                 />
               </div>
               
@@ -173,7 +173,7 @@ export const ModelDialog = ({ open, onOpenChange }: ModelDialogProps) => {
                   id="projectNumber"
                   value={geminiConfig.projectNumber}
                   onChange={(e) => setGeminiConfig({ ...geminiConfig, projectNumber: e.target.value })}
-                  placeholder="974968693201"
+                  placeholder="999999999999"
                 />
               </div>
               
