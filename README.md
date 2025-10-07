@@ -23,7 +23,7 @@ Keeko is an intelligent summarization engine designed to help researchers, stude
 ```sh
 cd ~/Downloads
 
-git clone https://github.com/vvvooolt/Keeko.git
+git clone https://github.com/vvvooolt/Keeko.git -b production
 
 cd Keeko
 
