@@ -9,7 +9,7 @@ if curl --silent --fail http://localhost:8080/ > /dev/null; then
   fi
 fi
 
-cd ~/Downloads/Keeko/ && ~/Downloads/Keeko/run.sh &
+cd ~/Downloads/Keeko/ && npm run dev &
 sleep 1 && cd ~/Downloads/Keeko/electron-client && npm start
 
 cd "$dir"
