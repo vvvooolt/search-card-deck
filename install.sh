@@ -13,7 +13,8 @@ set -e
 if command -v pacman >/dev/null 2>&1; then
     echo "using pacman for dependencies"
     sudo pacman -Syu
-    sudo pacman -S nodejs npm python-fastapi python-uvicorn python-python-multipart curl
+    sudo pacman -S nodejs npm python-fastapi python-pip python-python-multipart curl
+    pip install --break-system-packages --disable-pip-version-check --quiet uvicorn
 elif command -v apt >/dev/null 2>&1; then
     echo "using apt for dependencies"
     sudo apt update && sudo apt upgrade -y
@@ -80,7 +81,8 @@ else
     echo "Failed to install npm dependencies"
     exit 1
 fi
-
+echo "Creating keeko-browser command.."
+sudo cp -r ~/Downloads/Keeko/run.sh /usr/bin/keeko-browser && sudo chmod +x /usr/bin/keeko-browser
 echo ""
 echo "=== Installation Complete ==="
-echo "You can now run the application with the keeko command for Desktop, or the ./run.sh for the browser site"
+echo "You can now run the application with the keeko command for Desktop, or the command 'keeko-browser' for the browser site"
