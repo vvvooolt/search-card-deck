@@ -132,7 +132,7 @@ async def summarize_xml(file: UploadFile = File(...)):
 
     try:
         result = subprocess.run(
-            ["ollama", "run", "--think=false", "qwen3:0.6b"],
+            ["ollama", "run", "--think=false", "qwen3:4b-instruct-2507-q8_0"],
             input=full_prompt.encode("utf-8"),
             capture_output=True,
             check=True
