@@ -9,3 +9,5 @@ for PORT in $PORTS; do
     kill -9 "$pid"
   fi
 done
+sudo pkill ollama
+
