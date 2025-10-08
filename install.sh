@@ -48,14 +48,14 @@ echo "Starting Ollama service..."
 ollama serve &> /dev/null &
 sleep 2
 
-echo "Checking for qwen3:0.6b model..."
-if ollama list | grep -q "qwen3:0.6b"; then
+echo "Checking for local model..."
+if ollama list | grep -q "qwen3:4b-instruct"; then
     echo "local modal already installed"
 else
-    echo "pulling qwen3:0.6b model, please wait"
-    ollama pull qwen3:0.6b
+    echo "pulling local model, please wait"
+    ollama pull qwen3:4b-instruct
     if [ $? -eq 0 ]; then
-        echo "qwen3:0.6b model installed successfully"
+        echo "local model installed successfully"
     else
         echo "Failed to install local model"
         exit 1
