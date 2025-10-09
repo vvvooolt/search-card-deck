@@ -3,7 +3,7 @@
 
 Keeko is an intelligent summarization engine designed to help researchers, students, and enthusiasts quickly digest scientific articles. Instead of reading dozens of lengthy papers, Keeko extracts the insights you care about—tailored to your goals and focus areas.  
 
-#### This branch contains the project as it was at the end of the NASA space apps local event, however, due to our dedication and love for the project, we decided to split the project into another branch containing post event updates and changes, to see that branch, [click here](https://github.com/vvvooolt/Keeko/tree/POST-EVENT-UPDATES)
+#### This branch contains the project as it was at the end of the NASA space apps local event, however, due to our dedication and love for the project, we decided to split the project into another branch containing Post Event Updates (sometimes referred to as the PEU branch) and changes, to see that branch, [click here](https://github.com/vvvooolt/Keeko/tree/POST-EVENT-UPDATES)
 
 ---
 
