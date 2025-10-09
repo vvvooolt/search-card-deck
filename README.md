@@ -32,7 +32,7 @@ cd Keeko
 sudo chmod +x install.sh && ./install.sh
 ```
 ## Not on arch? 
-##### we are working on porting it to other linux distributions, as well as windows, and potentially macOS in the future
+##### Versions that work on other linux distributions can be found in the PEU (post event updates) branch, windows and macOS support are yet to be introduced
 ---
 ## Usage
 **Running the application**
