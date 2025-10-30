@@ -8,6 +8,9 @@ import {
 } from "@/components/ui/dialog";
 import { Loader2 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 interface SummaryDialogProps {
   open: boolean;
@@ -105,7 +108,51 @@ export const SummaryDialog = ({ open, onOpenChange, pmcId }: SummaryDialogProps)
 
           {summary && (
             <div className="prose prose-sm max-w-none dark:prose-invert">
-              <ReactMarkdown>
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  code({ node, inline, className, children, ...props }: any) {
+                    const match = /language-(\w+)/.exec(className || "");
+                    return !inline && match ? (
+                      <SyntaxHighlighter
+                        style={oneDark}
+                        language={match[1]}
+                        PreTag="div"
+                        {...props}
+                      >
+                        {String(children).replace(/\n$/, "")}
+                      </SyntaxHighlighter>
+                    ) : (
+                      <code className={className} {...props}>
+                        {children}
+                      </code>
+                    );
+                  },
+                  table({ children }: any) {
+                    return (
+                      <div className="overflow-x-auto">
+                        <table className="border-collapse border border-border">
+                          {children}
+                        </table>
+                      </div>
+                    );
+                  },
+                  th({ children }: any) {
+                    return (
+                      <th className="border border-border bg-muted px-4 py-2 font-semibold">
+                        {children}
+                      </th>
+                    );
+                  },
+                  td({ children }: any) {
+                    return (
+                      <td className="border border-border px-4 py-2">
+                        {children}
+                      </td>
+                    );
+                  },
+                }}
+              >
                 {summary}
               </ReactMarkdown>
             </div>
