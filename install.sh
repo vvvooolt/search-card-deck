@@ -49,11 +49,11 @@ ollama serve &> /dev/null &
 sleep 2
 
 echo "Checking for local model..."
-if ollama list | grep -q "qwen3-vl:235b-cloud"; then
+if ollama list | grep -q "gpt-oss:20b-cloud"; then
     echo "local modal already installed"
 else
     echo "pulling local model, please wait"
-    ollama pull qwen3-vl:235b-cloud
+    ollama pull gpt-oss:20b-cloud
     if [ $? -eq 0 ]; then
         echo "local model installed successfully"
     else
